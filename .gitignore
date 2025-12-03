@@ -1,0 +1,71 @@
+# ===========================
+# Node / Hardhat
+# ===========================
+node_modules/
+cache/
+artifacts/
+typechain/
+typechain-types/
+
+# Hardhat temporary files
+hh-cache/
+coverage/
+coverage.json
+
+# ===========================
+# Env files
+# ===========================
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Keys / Secrets
+*.key
+*.pem
+
+# ===========================
+# Frontend build files
+# ===========================
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/dist/
+frontend/.expo/
+
+# React / Vite cache
+.vite/
+frontend/.vite/
+
+# ===========================
+# Logs
+# ===========================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===========================
+# OS / Editor
+# ===========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# ===========================
+# Images cache
+# ===========================
+*.webp
+*.png
+*.jpg
+*.jpeg
+
+# ===========================
+# Blockchain Deploy Artifacts
+# ===========================
+deployments/

@@ -1,0 +1,16 @@
+{
+  "name": "food-commerce",
+  "version": "1.0.0",
+  "description": "Food Commerce DApp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.27.1"
+  }
+}
