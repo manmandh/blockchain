@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useWallet } from "../hooks/useWallet";
 import { useTheme } from "../hooks/useTheme";
+import { useAuth } from "../context/AuthContext";
 
 export default function WalletButton() {
   const {
@@ -12,6 +13,7 @@ export default function WalletButton() {
     isConnecting,
   } = useWallet();
   const { isDark } = useTheme();
+  const { isAuthenticated, loading } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const closeMenu = () => setIsMenuOpen(false);
@@ -30,6 +32,10 @@ export default function WalletButton() {
     disconnectWallet();
     closeMenu();
   };
+
+  if (loading) {
+    return null; // Or a loading spinner
+  }
 
   if (isConnected) {
     return (
@@ -62,6 +68,7 @@ export default function WalletButton() {
   }
 
   return (
+    isAuthenticated ? (
     <button
       disabled={isConnecting}
       onClick={handleConnect}
@@ -73,6 +80,9 @@ export default function WalletButton() {
     >
       {isConnecting ? "Connecting..." : "Connect Wallet"}
     </button>
+    ) : (
+      <span className="text-sm text-slate-300">Login to connect wallet</span>
+    )
   );
 }
 

@@ -6,9 +6,23 @@ import Menu from "./pages/Menu";
 import ProductDetail from "./pages/ProductDetail";
 import CartPage from "./pages/Cart";
 import CheckoutPage from "./pages/Checkout";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import AdminDashboard from "./pages/AdminDashboard";
+import { useAuth } from "./context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 function App() {
   const [isCartOpen, setCartOpen] = useState(false);
+  const { loading } = useAuth();
+
+  const AdminRoute = ({ children }) => {
+    if (loading) return <div>Loasding...</div>;
+    // if (!isAuthenticated || user.role !== 'admin') {
+    //   return <Navigate to="/login" />;
+    // }
+    return children;
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
@@ -21,6 +35,17 @@ function App() {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/admin/*"
+            element={
+              // eslint-disable-next-line react-hooks/static-components
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          />
         </Routes>
       </main>
       <Footer />
