@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
 import { useWallet } from "../hooks/useWallet";
 import { useIPFS } from "../hooks/useIPFS";
+import { useAuth } from "../context/AuthContext";
 import { submitCheckout } from "../api/checkout";
 import { useOrderEvents } from "../hooks/useOrderEvents";
 
@@ -9,6 +11,8 @@ export default function CheckoutPage() {
   const { items, subtotal, clearCart } = useCart();
   const { account, isConnected, connectWallet } = useWallet();
   const { uploadFile, isUploading } = useIPFS();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const [notes, setNotes] = useState("");
   const [attachment, setAttachment] = useState(null);
@@ -30,10 +34,21 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Check if user is logged in
+    if (!isAuthenticated) {
+      setError("Please login first before submitting an order.");
+      navigate('/login');
+      return;
+    }
+
+    // Check if wallet is connected
     if (!isConnected) {
+      setError("Please connect your wallet first.");
       await connectWallet();
       return;
     }
+
     if (!items.length) {
       setError("Add dishes to your cart first.");
       return;
@@ -156,4 +171,3 @@ export default function CheckoutPage() {
     </div>
   );
 }
-

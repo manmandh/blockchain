@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import Web3 from "web3";
+import api from '../api/axios';
 
 const WalletContext = createContext(null);
 
@@ -39,6 +40,16 @@ export function WalletProvider({ children }) {
         method: "eth_chainId",
       });
       setChainId(networkId);
+
+      // Connect Metamask account to backend if user is logged in
+      const token = localStorage.getItem('token');
+      if (token && accounts[0]) {
+        await api.put(
+          '/auth/connect-metamask',
+          { metamaskAccount: accounts[0] },
+        );
+        console.log('Metamask account connected to backend successfully');
+      }
     } finally {
       setIsConnecting(false);
     }
@@ -85,6 +96,7 @@ export function WalletProvider({ children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useWalletContext() {
   const context = useContext(WalletContext);
   if (!context) {

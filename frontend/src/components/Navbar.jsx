@@ -2,8 +2,9 @@ import { Link, NavLink } from "react-router-dom";
 import WalletButton from "./WalletButton";
 import { useTheme } from "../hooks/useTheme";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
-const navItems = [
+const baseNavItems = [
   { label: "Home", path: "/" },
   { label: "Menu", path: "/menu" },
   { label: "Cart", path: "/cart" },
@@ -12,7 +13,15 @@ const navItems = [
 
 export default function Navbar({ onCartToggle }) {
   const { toggleTheme, isDark } = useTheme();
+  const { isAuthenticated, user, logout } = useAuth(); // Get user object
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navItems = [
+    ...baseNavItems,
+    ...(isAuthenticated && user && user.role === "admin"
+      ? [{ label: "Admin", path: "/admin" }]
+      : []),
+  ];
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/5 bg-slate-900/70 backdrop-blur-xl dark:bg-slate-900/80">
@@ -38,6 +47,38 @@ export default function Navbar({ onCartToggle }) {
               {item.label}
             </NavLink>
           ))}
+
+          {!isAuthenticated ? (
+            <>
+              <NavLink
+                to="/register"
+                className={({ isActive }) =>
+                  `text-sm font-medium transition ${
+                    isActive ? "text-brand-orange" : "text-slate-300 hover:text-white"
+                  }`
+                }
+              >
+                Register
+              </NavLink>
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  `text-sm font-medium transition ${
+                    isActive ? "text-brand-orange" : "text-slate-300 hover:text-white"
+                  }`
+                }
+              >
+                Login
+              </NavLink>
+            </>
+          ) : (
+            <button
+              onClick={logout}
+              className="text-sm font-medium transition text-slate-300 hover:text-white"
+            >
+              Logout
+            </button>
+          )}
         </nav>
 
         <div className="flex items-center gap-3">
@@ -64,7 +105,7 @@ export default function Navbar({ onCartToggle }) {
         </div>
       </div>
 
-          {isMenuOpen && (
+      {isMenuOpen && (
         <div className="border-t border-white/5 bg-slate-900/90 px-4 py-4 md:hidden">
           <nav className="flex flex-col gap-4">
             {navItems.map((item) => (
@@ -77,19 +118,46 @@ export default function Navbar({ onCartToggle }) {
                 {item.label}
               </NavLink>
             ))}
-                <button
-                  onClick={() => {
-                    onCartToggle?.();
-                    setIsMenuOpen(false);
-                  }}
-                  className="rounded-full border border-white/10 px-4 py-2 text-left text-sm text-white"
+            {!isAuthenticated ? (
+              <>
+                <NavLink
+                  to="/register"
+                  className="text-sm font-medium text-slate-100"
+                  onClick={() => setIsMenuOpen(false)}
                 >
-                  Cart
-                </button>
+                  Register
+                </NavLink>
+                <NavLink
+                  to="/login"
+                  className="text-sm font-medium text-slate-100"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Login
+                </NavLink>
+              </>
+            ) : (
+              <button
+                onClick={() => {
+                  logout();
+                  setIsMenuOpen(false);
+                }}
+                className="rounded-full border border-white/10 px-4 py-2 text-left text-sm text-white"
+              >
+                Logout
+              </button>
+            )}
+            <button
+              onClick={() => {
+                onCartToggle?.();
+                setIsMenuOpen(false);
+              }}
+              className="rounded-full border border-white/10 px-4 py-2 text-left text-sm text-white"
+            >
+              Cart
+            </button>
           </nav>
         </div>
       )}
     </header>
   );
 }
-
