@@ -88,6 +88,7 @@ export function WalletProvider({ children }) {
       shortAddress,
       isConnected: Boolean(account),
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [account, chainId, web3, isConnecting, shortAddress]
   );
 
