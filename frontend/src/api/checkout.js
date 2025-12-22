@@ -33,9 +33,19 @@ export async function submitCheckout({
   );
 
   // 2. Call smart contract to create order
-  const tx = await contract.methods
-    .createOrder(customerAddress, totalWei, ipfsHash)
-    .send({ from: customerAddress });
+  const createOrderMethod = contract.methods.createOrder(customerAddress, totalWei, ipfsHash);
+
+  let gasLimit;
+  try {
+    gasLimit = await createOrderMethod.estimateGas({ from: customerAddress });
+    // Add a buffer to the estimated gas for safety
+    gasLimit = Math.floor(gasLimit * 2.0); // Increase by 100% for demo purposes
+  } catch (gasError) {
+    console.error('Error estimating gas:', gasError);
+    throw new Error(`Failed to estimate gas for transaction: ${gasError.message || gasError}`);
+  }
+
+  const tx = await createOrderMethod.send({ from: customerAddress, gas: gasLimit });
 
   // 3. Get chainId from ethereum provider
   let chainId = null;

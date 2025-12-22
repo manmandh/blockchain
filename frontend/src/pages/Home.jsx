@@ -53,7 +53,7 @@ export default function Home() {
             View full menu →
           </Link>
         </div>
-        <div className="mt-6 grid gap-6 md:grid-cols-2">
+        <div className="mt-6 grid gap-6 md:grid-cols-3">
           {featured.map((product) => (
             <ProductCard
               key={product.id}
