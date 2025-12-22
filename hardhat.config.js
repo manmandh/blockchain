@@ -5,6 +5,7 @@ module.exports = {
   solidity: "0.8.28",
   networks: {
     hardhat: {
+      loggingEnabled: false,
       chainId: 31337,
       mining: {
         auto: true,

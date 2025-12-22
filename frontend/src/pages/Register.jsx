@@ -35,15 +35,15 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6">
+    <div className="flex justify-center items-center min-h-screen bg-slate-950 text-white">
+      <div className="bg-white/5 p-8 rounded-lg shadow-xl shadow-black/20 backdrop-blur w-full max-w-md border border-white/5">
+        <h2 className="text-2xl font-bold text-center mb-6 text-white">
           Register
         </h2>
 
         <form onSubmit={onSubmit}>
           {error && (
-            <p className="text-red-500 text-center mb-4">
+            <p className="text-red-400 text-center mb-4">
               {error}
             </p>
           )}
@@ -51,7 +51,7 @@ const Register = () => {
           <div className="mb-4">
             <label
               htmlFor="username"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-slate-300 text-sm font-bold mb-2"
             >
               Username
             </label>
@@ -62,7 +62,7 @@ const Register = () => {
               name="username"
               value={username}
               onChange={onChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-white/10 rounded w-full py-2 px-3 bg-slate-900/60 text-white leading-tight focus:outline-none focus:shadow-outline"
               required
             />
           </div>
@@ -70,7 +70,7 @@ const Register = () => {
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-slate-300 text-sm font-bold mb-2"
             >
               Email
             </label>
@@ -81,7 +81,7 @@ const Register = () => {
               name="email"
               value={email}
               onChange={onChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-white/10 rounded w-full py-2 px-3 bg-slate-900/60 text-white leading-tight focus:outline-none focus:shadow-outline"
               required
             />
           </div>
@@ -89,7 +89,7 @@ const Register = () => {
           <div className="mb-6">
             <label
               htmlFor="password"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-slate-300 text-sm font-bold mb-2"
             >
               Password
             </label>
@@ -100,7 +100,7 @@ const Register = () => {
               name="password"
               value={password}
               onChange={onChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border border-white/10 rounded w-full py-2 px-3 bg-slate-900/60 text-white mb-3 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
           </div>
@@ -108,7 +108,7 @@ const Register = () => {
           <div className="flex items-center justify-between">
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-brand-orange hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
               Register
             </button>
