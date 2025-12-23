@@ -2,69 +2,60 @@ import React, { useEffect, useState } from 'react';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
 
-const AdminTransactions = () => {
-  const [transactions, setTransactions] = useState([]);
+const AdminUsers = () => {
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [showIpfsModal, setShowIpfsModal] = useState(false);
-  const [ipfsContent, setIpfsContent] = useState('');
-  const [currentIpfsHash, setCurrentIpfsHash] = useState('');
 
   const { isAuthenticated = false, user = { role: 'user' } } = useAuth();
 
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      if (!isAuthenticated || user.role !== 'admin') {
-        setError('You are not authorized to view this page.');
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const res = await api.get('/admin/transactions');
-        setTransactions(res.data);
-      } catch (err) {
-        setError(
-          err.response?.data?.msg ||
-            err.message ||
-            'Failed to fetch transactions'
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTransactions();
-  }, [isAuthenticated, user]);
-
-  const handleViewIpfs = async (ipfsHash) => {
-    if (!ipfsHash) {
+  const fetchUsers = async () => {
+    if (!isAuthenticated || user.role !== 'admin') {
+      setError('You are not authorized to view this page.');
+      setLoading(false);
       return;
     }
 
-    setCurrentIpfsHash(ipfsHash);
-
     try {
-      const res = await api.get(`/admin/ipfs/${ipfsHash}`);
-      setIpfsContent(
-        typeof res.data?.content === 'object'
-          ? JSON.stringify(res.data.content, null, 2)
-          : res.data?.content || 'No content'
-      );
-      setShowIpfsModal(true);
+      const res = await api.get('/admin/users');
+      setUsers(res.data);
     } catch (err) {
       setError(
         err.response?.data?.msg ||
           err.message ||
-          'Failed to fetch IPFS content'
+          'Failed to fetch users'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, user]);
+
+  const handleDelete = async (userId) => {
+    if (!window.confirm('Are you sure you want to delete this user?')) {
+      return;
+    }
+
+    try {
+      await api.delete(`/admin/users/${userId}`);
+      setUsers(users.filter((u) => u._id !== userId));
+    } catch (err) {
+      setError(
+        err.response?.data?.msg ||
+          err.message ||
+          'Failed to delete user'
       );
     }
   };
 
   if (loading) {
     return (
-      <div className="text-center py-4">
-        Loading transactions...
+      <div className="text-center py-4 text-slate-300">
+        Loading users...
       </div>
     );
   }
@@ -80,7 +71,7 @@ const AdminTransactions = () => {
   return (
     <div className="container mx-auto px-4">
       <h2 className="text-2xl font-bold text-white mb-6">
-        Manage Transactions
+        Manage Users
       </h2>
 
       <div className="overflow-x-auto">
@@ -88,96 +79,70 @@ const AdminTransactions = () => {
           <thead>
             <tr>
               <th className="py-3 px-6 text-left text-xs font-medium text-slate-300 uppercase tracking-wider border-b border-white/10">
-                Transaction ID
+                ID
               </th>
               <th className="py-3 px-6 text-left text-xs font-medium text-slate-300 uppercase tracking-wider border-b border-white/10">
-                User
+                Username
               </th>
               <th className="py-3 px-6 text-left text-xs font-medium text-slate-300 uppercase tracking-wider border-b border-white/10">
-                Order ID
+                Email
               </th>
               <th className="py-3 px-6 text-left text-xs font-medium text-slate-300 uppercase tracking-wider border-b border-white/10">
-                Total Wei
+                Role
               </th>
               <th className="py-3 px-6 text-left text-xs font-medium text-slate-300 uppercase tracking-wider border-b border-white/10">
-                IPFS Hash
+                MetaMask Account
               </th>
               <th className="py-3 px-6 text-left text-xs font-medium text-slate-300 uppercase tracking-wider border-b border-white/10">
-                Created At
+                Actions
               </th>
             </tr>
           </thead>
 
           <tbody className="divide-y divide-white/10">
-            {transactions.map((tx) => (
-              <tr key={tx._id}>
-                <td className="py-4 px-6 text-sm font-medium text-white">
-                  {tx._id}
+            {users.map((u) => (
+              <tr key={u._id}>
+                <td className="py-4 px-6 text-sm font-medium text-white break-all">
+                  {u._id}
                 </td>
 
                 <td className="py-4 px-6 text-sm text-slate-300">
-                  {tx.userId
-                    ? `${tx.userId.username} (${tx.userId.email})`
-                    : 'N/A'}
+                  {u.username}
                 </td>
 
                 <td className="py-4 px-6 text-sm text-slate-300">
-                  {tx.orderId?._id || 'N/A'}
+                  {u.email}
                 </td>
 
                 <td className="py-4 px-6 text-sm text-slate-300">
-                  {tx.totalWei}
+                  {u.role}
                 </td>
 
-                <td className="py-4 px-6 text-sm">
-                  {tx.ipfsHash ? (
-                    <button
-                      onClick={() => handleViewIpfs(tx.ipfsHash)}
-                      className="text-brand-orange hover:text-orange-700 break-all"
-                    >
-                      {tx.ipfsHash.slice(0, 10)}...
-                    </button>
-                  ) : (
-                    <span className="text-slate-400">
-                      N/A
-                    </span>
-                  )}
+                <td className="py-4 px-6 text-sm text-slate-300 break-all">
+                  {u.metamaskAccount || 'N/A'}
                 </td>
 
-                <td className="py-4 px-6 text-sm text-slate-300">
-                  {new Date(tx.createdAt).toLocaleDateString()}
+                <td className="py-4 px-6 text-sm font-medium">
+                  <button
+                    className="text-brand-orange hover:text-orange-700 mr-4"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    onClick={() => handleDelete(u._id)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
-      {showIpfsModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center px-4">
-          <div className="bg-slate-800 p-8 rounded-xl shadow-xl border border-white/10 w-full max-w-4xl text-white max-h-[90vh] overflow-y-auto">
-            <h3 className="text-xl font-bold mb-6">
-              IPFS Content for{' '}
-              {currentIpfsHash?.slice(0, 10) || 'N/A'}...
-            </h3>
-
-            <pre className="bg-slate-900/60 p-4 rounded-md text-slate-300 whitespace-pre-wrap break-all">
-              {ipfsContent}
-            </pre>
-
-            <div className="mt-8 flex justify-end">
-              <button
-                onClick={() => setShowIpfsModal(false)}
-                className="bg-brand-orange hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-lg"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
-export default AdminTransactions;
+export default AdminUsers;

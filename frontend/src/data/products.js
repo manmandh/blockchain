@@ -49,7 +49,7 @@ export const products = [
     description: "Grilled chicken breast, quinoa, avocado, tahini sauce.",
     price: 20,
     image:
-      "https://images.unsplash.com/photo-1604908812374-91c58c63c8c5?auto=format&fit=crop&w=800&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbK-IdaiPLcSvBzhI6EJOwJRJ0NW_Q9sLmgg&s",
     category: "Bowls",
     featured: true,
     badges: ["High Protein"],
@@ -71,7 +71,7 @@ export const products = [
     description: "Tomato sauce, fresh mozzarella, basil leaves.",
     price: 19,
     image:
-      "https://images.unsplash.com/photo-1548365328-9f547fb09537?auto=format&fit=crop&w=800&q=80",
+      "https://i.pinimg.com/564x/6b/73/52/6b7352b5c46af2150f596725c4d21c24.jpg",
     category: "Pizza",
     featured: false,
     badges: ["Vegetarian"],
@@ -82,7 +82,7 @@ export const products = [
     description: "Wok-fried rice with shrimp, egg, green onions.",
     price: 21,
     image:
-      "https://images.unsplash.com/photo-1604909052550-01bdbb22b66b?auto=format&fit=crop&w=800&q=80",
+      "https://twoplaidaprons.com/wp-content/uploads/2022/05/shrimp-fried-rice-on-plate-thumbnail.jpg",
     category: "Rice",
     featured: false,
     badges: ["Popular"],
@@ -104,7 +104,7 @@ export const products = [
     description: "Warm chocolate cake with molten center.",
     price: 14,
     image:
-      "https://images.unsplash.com/photo-1601972599720-b94a7f7eafae?auto=format&fit=crop&w=800&q=80",
+      "https://images.getrecipekit.com/20250325120225-how-20to-20make-20chocolate-20molten-20lava-20cake-20in-20the-20microwave.png?width=650&quality=90&",
     category: "Desserts",
     featured: true,
     badges: ["Dessert"],
@@ -126,7 +126,7 @@ export const products = [
     description: "Mixed berries, banana, yogurt, honey.",
     price: 11,
     image:
-      "https://images.unsplash.com/photo-1505253216365-9091c9b8c55c?auto=format&fit=crop&w=800&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUUvyP6i8nnSwLPD3QgU5RipoIead0mORKtg&s",
     category: "Drinks",
     featured: false,
     badges: ["Healthy"],
